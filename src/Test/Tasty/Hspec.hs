@@ -82,14 +82,14 @@ import Test.Hspec
 
 -- | Create a <https://hackage.haskell.org/package/tasty tasty> 'T.TestTree' from an
 -- <https://hackage.haskell.org/package/hspec Hspec> 'H.Spec'.
-testSpec :: T.TestName -> H.Spec -> IO T.TestTree
+testSpec :: HasCallStack => T.TestName -> H.Spec -> IO T.TestTree
 testSpec name spec = T.testGroup name <$> testSpecs spec
 
 -- | Create a list of <https://hackage.haskell.org/package/tasty tasty>
 -- 'T.TestTree' from an <https://hackage.haskell.org/package/hspec Hspec>
 -- 'H.Spec'. This returns the same tests as 'testSpec' but doesn't create
 -- a <https://hackage.haskell.org/package/tasty tasty> test group from them.
-testSpecs :: H.Spec -> IO [T.TestTree]
+testSpecs :: HasCallStack => H.Spec -> IO [T.TestTree]
 testSpecs spec =
   catMaybes . map specTreeToTestTree <$>
     -- In hspec 2.6.0, "focus" was introduced. Here we do as hspec does, which
@@ -106,7 +106,7 @@ testSpecs spec =
       id
 #endif
 
-specTreeToTestTree :: H.SpecTree () -> Maybe T.TestTree
+specTreeToTestTree :: HasCallStack => H.SpecTree () -> Maybe T.TestTree
 specTreeToTestTree spec_tree =
   case spec_tree of
     H.Node name spec_trees ->
